@@ -1,0 +1,348 @@
+# 示例：llama.cpp项目的CMake构建模式
+# 基于主项目CMakeLists.txt的实际模式
+
+cmake_minimum_required(VERSION 3.14)
+project("llama-cpp-feature" C CXX)
+
+# 设置编译命令导出 - 用于IDE和语言服务器
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# 构建类型设置 - 遵循llama.cpp约定
+if (NOT XCODE AND NOT MSVC AND NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
+# 输出目录设置
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+# 检测是否为独立项目
+if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    set(LLAMA_STANDALONE ON)
+else()
+    set(LLAMA_STANDALONE OFF)
+endif()
+
+# Windows兼容性
+if (WIN32)
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+endif()
+
+# MSVC特定设置
+if (MSVC)
+    add_compile_options("$<$<COMPILE_LANGUAGE:C>:/utf-8>")
+    add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:/utf-8>")
+    add_compile_options("$<$<COMPILE_LANGUAGE:C>:/bigobj>")
+    add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:/bigobj>")
+endif()
+
+#
+# 选项定义 - 遵循llama.cpp命名约定
+#
+
+# 调试选项
+option(LLAMA_ALL_WARNINGS           "llama: enable all compiler warnings"                   ON)
+option(LLAMA_ALL_WARNINGS_3RD_PARTY "llama: enable all compiler warnings in 3rd party libs" OFF)
+option(LLAMA_FATAL_WARNINGS         "llama: enable -Werror flag"                            OFF)
+
+# 构建选项
+option(LLAMA_BUILD_TESTS    "llama: build tests"          ${LLAMA_STANDALONE})
+option(LLAMA_BUILD_EXAMPLES "llama: build examples"       ${LLAMA_STANDALONE})
+
+# 硬件加速选项
+option(LLAMA_CUDA           "llama: use CUDA"             OFF)
+option(LLAMA_METAL          "llama: use Metal"            OFF)
+option(LLAMA_OPENCL         "llama: use OpenCL"           OFF)
+option(LLAMA_BLAS           "llama: use BLAS"             OFF)
+
+# sanitizer选项
+option(LLAMA_SANITIZE_THREAD    "llama: enable thread sanitizer"    OFF)
+option(LLAMA_SANITIZE_ADDRESS   "llama: enable address sanitizer"   OFF)
+option(LLAMA_SANITIZE_UNDEFINED "llama: enable undefined sanitizer" OFF)
+
+# 优化选项
+option(LLAMA_NATIVE         "llama: enable -march=native flag"      OFF)
+option(LLAMA_LTO            "llama: enable link time optimization"  OFF)
+
+#
+# 编译器设置
+#
+
+# C++标准
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
+# 编译器警告设置
+if (NOT MSVC)
+    if (LLAMA_ALL_WARNINGS)
+        add_compile_options(
+            -Wall
+            -Wextra
+            -Wpedantic
+            -Wcast-qual
+            -Wno-unused-function
+        )
+    else()
+        add_compile_options(
+            -Wall
+            -Wextra
+            -Wpedantic
+            -Wcast-qual
+            -Wdouble-promotion
+            -Wshadow
+            -Wstrict-prototypes
+            -Wpointer-arith
+            -Wmissing-prototypes
+            -Werror=implicit-int
+            -Werror=implicit-function-declaration
+        )
+    endif()
+
+    if (LLAMA_FATAL_WARNINGS)
+        add_compile_options(-Werror)
+    endif()
+endif()
+
+# 原生优化
+if (LLAMA_NATIVE)
+    add_compile_options(-march=native)
+endif()
+
+# Sanitizers
+if (LLAMA_SANITIZE_THREAD)
+    add_compile_options(-fsanitize=thread)
+    add_link_options(-fsanitize=thread)
+endif()
+
+if (LLAMA_SANITIZE_ADDRESS)
+    add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=address)
+endif()
+
+if (LLAMA_SANITIZE_UNDEFINED)
+    add_compile_options(-fsanitize=undefined)
+    add_link_options(-fsanitize=undefined)
+endif()
+
+#
+# 第三方库查找
+#
+
+# 数学库
+find_library(MATH_LIBRARY m)
+if (MATH_LIBRARY)
+    link_libraries(${MATH_LIBRARY})
+endif()
+
+# 线程库
+find_package(Threads REQUIRED)
+
+# CUDA支持
+if (LLAMA_CUDA)
+    enable_language(CUDA)
+    find_package(CUDAToolkit REQUIRED)
+    
+    if (CUDAToolkit_FOUND)
+        message(STATUS "CUDA found")
+        
+        # CUDA编译选项
+        set(CMAKE_CUDA_STANDARD 17)
+        set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+        
+        # CUDA架构设置
+        if (NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
+            # 支持常见的GPU架构
+            set(CMAKE_CUDA_ARCHITECTURES "50;52;61;70;75;80;86")
+        endif()
+        
+        add_compile_definitions(GGML_USE_CUDA)
+        
+        # CUDA相关编译选项
+        add_compile_options($<$<COMPILE_LANGUAGE:CUDA>:-use_fast_math>)
+        add_compile_options($<$<COMPILE_LANGUAGE:CUDA>:-lineinfo>)
+        
+        # 链接CUDA库
+        link_libraries(CUDA::cudart CUDA::cublas CUDA::cublasLt)
+    else()
+        message(WARNING "CUDA not found")
+    endif()
+endif()
+
+# BLAS支持
+if (LLAMA_BLAS)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(BLAS REQUIRED blas)
+    
+    if (BLAS_FOUND)
+        add_compile_definitions(GGML_USE_BLAS)
+        link_libraries(${BLAS_LIBRARIES})
+        include_directories(${BLAS_INCLUDE_DIRS})
+    endif()
+endif()
+
+#
+# 源文件定义
+#
+
+# 核心库源文件
+set(LLAMA_CORE_SOURCES
+    src/llama.cpp
+    src/llama-impl.cpp
+    src/llama-context.cpp
+    src/llama-model.cpp
+    src/llama-quant.cpp
+    src/llama-vocab.cpp
+    # 添加新功能的源文件
+    src/new-feature.cpp
+)
+
+# CUDA源文件（条件编译）
+if (LLAMA_CUDA)
+    list(APPEND LLAMA_CORE_SOURCES
+        ggml/src/ggml-cuda/new-feature.cu
+    )
+endif()
+
+# 公共头文件
+set(LLAMA_PUBLIC_HEADERS
+    include/llama.h
+    include/llama-cpp.h
+)
+
+#
+# 目标定义
+#
+
+# 创建核心库
+add_library(llama ${LLAMA_CORE_SOURCES})
+
+# 设置包含目录
+target_include_directories(llama PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+target_include_directories(llama PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/ggml/include
+)
+
+# 链接依赖
+target_link_libraries(llama PRIVATE Threads::Threads)
+
+if (LLAMA_CUDA)
+    target_link_libraries(llama PRIVATE CUDA::cudart CUDA::cublas)
+endif()
+
+# 设置目标属性
+set_target_properties(llama PROPERTIES
+    PUBLIC_HEADER "${LLAMA_PUBLIC_HEADERS}"
+    VERSION ${LLAMA_LIB_VERSION}
+    SOVERSION ${LLAMA_LIB_VERSION_MAJOR}
+)
+
+#
+# 示例程序构建
+#
+
+if (LLAMA_BUILD_EXAMPLES)
+    # 简单示例
+    add_executable(llama-simple examples/simple/simple.cpp)
+    target_link_libraries(llama-simple PRIVATE llama)
+    
+    # 新功能示例
+    add_executable(new-feature-example examples/new-feature/main.cpp)
+    target_link_libraries(new-feature-example PRIVATE llama)
+    target_include_directories(new-feature-example PRIVATE common)
+    
+    # 量化示例
+    add_executable(quantization-example examples/quantization/main.cpp)
+    target_link_libraries(quantization-example PRIVATE llama)
+endif()
+
+#
+# 测试构建
+#
+
+if (LLAMA_BUILD_TESTS)
+    enable_testing()
+    
+    # 单元测试
+    add_executable(test-quantize tests/test-quantize-fns.cpp)
+    target_link_libraries(test-quantize PRIVATE llama)
+    add_test(NAME test-quantize COMMAND test-quantize)
+    
+    # 新功能测试
+    add_executable(test-new-feature tests/test-new-feature.cpp)
+    target_link_libraries(test-new-feature PRIVATE llama)
+    add_test(NAME test-new-feature COMMAND test-new-feature)
+    
+    if (LLAMA_CUDA)
+        # CUDA测试
+        add_executable(test-cuda-quantize tests/test-cuda-quantize.cu)
+        target_link_libraries(test-cuda-quantize PRIVATE llama)
+        add_test(NAME test-cuda-quantize COMMAND test-cuda-quantize)
+    endif()
+endif()
+
+#
+# 安装配置
+#
+
+if (LLAMA_STANDALONE)
+    include(GNUInstallDirs)
+    
+    # 安装核心库
+    install(TARGETS llama
+        EXPORT llamaTargets
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    )
+    
+    # 安装示例程序
+    if (LLAMA_BUILD_EXAMPLES)
+        install(TARGETS llama-simple new-feature-example quantization-example
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        )
+    endif()
+    
+    # 生成和安装导出文件
+    install(EXPORT llamaTargets
+        FILE llamaTargets.cmake
+        NAMESPACE llama::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/llama
+    )
+    
+    # 生成配置文件
+    include(CMakePackageConfigHelpers)
+    configure_package_config_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/llamaConfig.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/llamaConfig.cmake"
+        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/llama
+    )
+    
+    install(FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/llamaConfig.cmake"
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/llama
+    )
+endif()
+
+# 打印构建信息
+message(STATUS "==== llama.cpp build configuration ====")
+message(STATUS "LLAMA_BUILD_TESTS:    ${LLAMA_BUILD_TESTS}")
+message(STATUS "LLAMA_BUILD_EXAMPLES: ${LLAMA_BUILD_EXAMPLES}")
+message(STATUS "LLAMA_CUDA:           ${LLAMA_CUDA}")
+message(STATUS "LLAMA_BLAS:           ${LLAMA_BLAS}")
+message(STATUS "CMAKE_BUILD_TYPE:     ${CMAKE_BUILD_TYPE}")
+message(STATUS "CMAKE_CXX_COMPILER:   ${CMAKE_CXX_COMPILER}")
+
+if (LLAMA_CUDA)
+    message(STATUS "CUDA_VERSION:         ${CUDAToolkit_VERSION}")
+    message(STATUS "CUDA_ARCHITECTURES:   ${CMAKE_CUDA_ARCHITECTURES}")
+endif()
+message(STATUS "=====================================")

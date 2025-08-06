@@ -1,0 +1,109 @@
+{
+  "environment": {
+    "model_path": "/root/autodl-fs/google-bert/bert-base-chinese",
+    "vocab_size": 21128,
+    "hidden_size": 768,
+    "num_attention_heads": 12
+  },
+  "attention_mask": {
+    "mask_transformation": {
+      "original_mask": "tensor([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])",
+      "mask_values": {},
+      "transformation_steps": [],
+      "extended_mask": "tensor([[[[-0., -0., -0., -0., -0., -0., -0., -0., -0., -0.]]]])",
+      "transformation_formula": "(1.0 - attention_mask) * torch.finfo(dtype).min"
+    },
+    "attention_computation": {
+      "raw_scores": "tensor([0.2155, 0.6626, 1.5941, 0.6749, 1.3323, 0.2794, 1.2169, 1.6551, 1.2438,\n        7.5301])",
+      "masked_scores": "tensor([0.2155, 0.6626, 1.5941, 0.6749, 1.3323, 0.2794, 1.2169, 1.6551, 1.2438,\n        7.5301])",
+      "attention_probs": "tensor([6.5609e-04, 1.0260e-03, 2.6043e-03, 1.0388e-03, 2.0044e-03, 6.9941e-04,\n        1.7859e-03, 2.7683e-03, 1.8347e-03, 9.8558e-01])"
+    }
+  },
+  "mlm_forward_pass": {
+    "shapes_log": [
+      "embeddings_output: [1, 10, 768]",
+      "sequence_output: [1, 10, 768]",
+      "transformed_output: [1, 10, 768]",
+      "prediction_scores: [1, 10, 21128]"
+    ],
+    "sequence_output_shape": [
+      1,
+      10,
+      768
+    ],
+    "prediction_scores_shape": [
+      1,
+      10,
+      21128
+    ],
+    "vocab_size": 21128
+  },
+  "loss_calculation": {
+    "pytorch_loss": 9.945377349853516,
+    "manual_loss": 9.945377349853516,
+    "difference": 0.0,
+    "verification_passed": true
+  },
+  "comprehensive_report": {
+    "analysis_timestamp": "2025-08-06T10:04:22.542733",
+    "summary": {
+      "attention_mask_understood": true,
+      "mlm_flow_traced": true,
+      "loss_mechanism_verified": true
+    },
+    "key_findings": [
+      "Attention mask的'全0'现象是正确的，因为经过(1.0-mask)*(-inf)转换",
+      "MLM的[MASK]token在attention中是可见的，只在损失计算时被选择性处理",
+      "CrossEntropyLoss的ignore_index=-100机制确保只有真实标签位置参与训练"
+    ],
+    "log_entries": [
+      "[10:04:22] INFO: 开始BERT技术机制深度分析",
+      "[10:04:22] INFO: 分析文本: 我喜欢学习人工[MASK]",
+      "[10:04:22] INFO: === 环境验证 ===",
+      "[10:04:22] INFO: 模型路径: /root/autodl-fs/google-bert/bert-base-chinese",
+      "[10:04:22] INFO: 词汇表大小: 21128",
+      "[10:04:22] INFO: 隐藏层维度: 768",
+      "[10:04:22] INFO: 注意力头数: 12",
+      "[10:04:22] INFO: === Phase 2: Attention Mask机制分析 ===",
+      "[10:04:22] INFO: === Attention Mask数值转换分析 ===",
+      "[10:04:22] INFO: 1. 原始attention_mask: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]",
+      "[10:04:22] INFO:    含义: 1=有效token, 0=padding",
+      "[10:04:22] INFO: 2. 扩展为4D: torch.Size([1, 1, 1, 10])",
+      "[10:04:22] INFO: 3. 转换公式: (1.0 - mask) * -3.4028234663852886e+38",
+      "[10:04:22] INFO:    转换后值: [-0.0, -0.0, -0.0, -0.0, -0.0]",
+      "[10:04:22] INFO:    含义: 0=可关注, -inf=忽略",
+      "[10:04:22] INFO: === Attention计算中Mask作用追踪 ===",
+      "[10:04:22] INFO: attention_scores计算后: tensor([0.2155, 0.6626, 1.5941, 0.6749, 1.3323])",
+      "[10:04:22] INFO: 加上mask后: tensor([0.2155, 0.6626, 1.5941, 0.6749, 1.3323])",
+      "[10:04:22] INFO: softmax后: tensor([0.0007, 0.0010, 0.0026, 0.0010, 0.0020])",
+      "[10:04:22] INFO: === Phase 3: MLM Forward Pass追踪 ===",
+      "[10:04:22] INFO: === MLM Forward Pass完整追踪 ===",
+      "[10:04:22] INFO: 1. BertEmbeddings",
+      "[10:04:22] INFO:   embeddings_output: [1, 10, 768]",
+      "[10:04:22] INFO: 2. BertEncoder处理",
+      "[10:04:22] INFO:   sequence_output: [1, 10, 768]",
+      "[10:04:22] INFO: 3. BertLMPredictionHead",
+      "[10:04:22] INFO:   3.1 Transform层",
+      "[10:04:22] INFO:   transformed_output: [1, 10, 768]",
+      "[10:04:22] INFO:   3.2 Decoder线性层",
+      "[10:04:22] INFO:   prediction_scores: [1, 10, 21128]",
+      "[10:04:22] INFO: === Phase 4: 损失计算验证 ===",
+      "[10:04:22] INFO: === CrossEntropyLoss ignore_index机制验证 ===",
+      "[10:04:22] INFO: labels: [-100, -100, -100, -100, -100, 3721, -100, -100]",
+      "[10:04:22] INFO: 只有位置5有真实标签: 3721",
+      "[10:04:22] INFO: PyTorch CrossEntropyLoss: 9.945377",
+      "[10:04:22] INFO: 手动计算损失: 9.945377",
+      "[10:04:22] INFO: 差异: 0.00000000",
+      "[10:04:22] INFO: \n验证-100位置被忽略:",
+      "[10:04:22] INFO:   位置0单独损失: 10.243145",
+      "[10:04:22] INFO:   位置1单独损失: 11.682980",
+      "[10:04:22] INFO:   位置2单独损失: 10.827193",
+      "[10:04:22] INFO:   位置3单独损失: 10.462615",
+      "[10:04:22] INFO:   位置4单独损失: 12.812713",
+      "[10:04:22] INFO:   位置6单独损失: 9.163776",
+      "[10:04:22] INFO:   位置7单独损失: 10.607360",
+      "[10:04:22] INFO: === Phase 5: 生成综合报告 ===",
+      "[10:04:22] INFO: ✅ 综合分析报告生成完成"
+    ]
+  }
+}

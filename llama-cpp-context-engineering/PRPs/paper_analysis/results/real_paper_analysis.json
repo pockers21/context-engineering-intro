@@ -1,0 +1,65 @@
+{
+  "analysis_timestamp": "2025-08-06T11:00:53.434568",
+  "method": "基于真实论文内容分析",
+  "papers_analyzed": 5,
+  "real_analyses": [
+    {
+      "title": "[2408.11743] MARLIN: Mixed-Precision Auto-Regressive Parallel Inference on Large Language Models",
+      "url": "https://arxiv.org/abs/2408.11743",
+      "abstract": "",
+      "key_contributions": [],
+      "performance_claims": [],
+      "implementation_complexity": "低复杂度",
+      "llama_cpp_relevance": 0.3
+    },
+    {
+      "title": "INT-FlashAttention: Enabling Flash Attention for INT8 Quantization",
+      "url": "https://arxiv.org/html/2409.16997v1",
+      "abstract": "As the foundation of large language models (LLMs), self-attention module faces the challenge of quadratic time and memory complexity with respect to sequence length. FlashAttention accelerates attenti...",
+      "key_contributions": [
+        "核心技术: s int-flashattention, the first int8 quantization architecture compatible with the forward workflow of flashattention, which significantly improves the inference speed of flashattention on ampere gpus",
+        "量化技术",
+        "注意力优化"
+      ],
+      "performance_claims": [],
+      "implementation_complexity": "高复杂度",
+      "llama_cpp_relevance": 1.0
+    },
+    {
+      "title": "SageAttention: Accurate 8-bit attention for Plug-and-Play Inference Acceleration",
+      "url": "https://arxiv.org/html/2410.02367v1",
+      "abstract": "The transformer architecture predominates across various models. As the heart of the transformer, attention has a computational complexity of O⁢(N2)𝑂superscript𝑁2O(N^{2})italic_O ( italic_N start_POST...",
+      "key_contributions": [
+        "量化技术",
+        "注意力优化"
+      ],
+      "performance_claims": [],
+      "implementation_complexity": "中等复杂度",
+      "llama_cpp_relevance": 0.8
+    },
+    {
+      "title": "KV-Compress: Paged KV-Cache Compression with Variable Compression Rates per Attention Head",
+      "url": "https://arxiv.org/html/2410.00161v2",
+      "abstract": "Context lengths of Large Language Models (LLMs) have exploded in recent years, with 128k-token context becoming a standard and million-token context becoming a reality. Efficiently supporting long-con...",
+      "key_contributions": [
+        "核心技术: kv-compress, a novel compression method that evicts contiguous kv blocks within a pagedattention [2] framework, reducing the memory footprint of the kv cache proportionally to this theoretical compression rate",
+        "注意力优化",
+        "缓存优化"
+      ],
+      "performance_claims": [],
+      "implementation_complexity": "高复杂度",
+      "llama_cpp_relevance": 1.0
+    },
+    {
+      "title": "Training-Free Activation Sparsity in Large Language Models",
+      "url": "https://arxiv.org/html/2408.14690v1",
+      "abstract": "Activation sparsity can enable practical inference speedups in large language models (LLMs) by reducing the compute and memory-movement required for matrix multiplications during the forward pass. How...",
+      "key_contributions": [
+        "量化技术"
+      ],
+      "performance_claims": [],
+      "implementation_complexity": "中等复杂度",
+      "llama_cpp_relevance": 1.0
+    }
+  ]
+}

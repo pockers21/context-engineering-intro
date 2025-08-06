@@ -1,0 +1,169 @@
+{
+  "inference_optimization_papers": [
+    {
+      "id": 1,
+      "title": "Marlin: Mixed-Precision Matrix Multiplication",
+      "arxiv_url": "https://arxiv.org/abs/2408.11743",
+      "category": "quantization",
+      "priority": "high",
+      "description": "CUDA kernel optimization for mixed-precision computation"
+    },
+    {
+      "id": 2,
+      "title": "INT-FlashAttention: Enabling Flash Attention for INT8 Quantization",
+      "arxiv_url": "https://arxiv.org/html/2409.16997v1",
+      "category": "attention_optimization",
+      "priority": "high",
+      "description": "INT8 quantized attention mechanism"
+    },
+    {
+      "id": 3,
+      "title": "SageAttention: Accurate 8-bit attention for Plug-and-Play Inference Acceleration",
+      "arxiv_url": "https://arxiv.org/html/2410.02367v1",
+      "category": "attention_optimization",
+      "priority": "high",
+      "description": "8-bit attention optimization"
+    },
+    {
+      "id": 4,
+      "title": "KV-Compress: Paged KV-Cache Compression with Variable Compression Rates per Attention Head",
+      "arxiv_url": "https://arxiv.org/html/2410.00161v2",
+      "category": "kv_cache",
+      "priority": "high",
+      "description": "KV cache compression techniques"
+    },
+    {
+      "id": 5,
+      "title": "Training-Free Activation Sparsity in Large Language Models",
+      "arxiv_url": "https://arxiv.org/html/2408.14690v1",
+      "category": "sparsity",
+      "priority": "medium",
+      "description": "Activation sparsity without training"
+    },
+    {
+      "id": 6,
+      "title": "FlatQuant: Flatness Matters for LLM Quantization",
+      "arxiv_url": "https://arxiv.org/html/2410.09426v1",
+      "category": "quantization",
+      "priority": "high",
+      "description": "W4A4 quantization method"
+    },
+    {
+      "id": 7,
+      "title": "KV Cache is 1 Bit Per Channel: Efficient Large Language Model Inference with Coupled Quantization",
+      "arxiv_url": "https://arxiv.org/abs/2405.03917",
+      "category": "kv_cache",
+      "priority": "high",
+      "description": "1-bit KV cache quantization"
+    },
+    {
+      "id": 8,
+      "title": "Keyformer: KV Cache Reduction through Key Tokens Selection for Efficient Generative Inference",
+      "arxiv_url": "https://arxiv.org/abs/2403.09054v2",
+      "category": "kv_cache",
+      "priority": "medium",
+      "description": "Key token selection for KV cache reduction"
+    },
+    {
+      "id": 9,
+      "title": "QSpec: Speculative Decoding with Quantized Models",
+      "arxiv_url": "https://arxiv.org/html/2410.11305v1",
+      "category": "speculative_decoding",
+      "priority": "high",
+      "description": "Quantized speculative decoding"
+    },
+    {
+      "id": 10,
+      "title": "Thoughts Are All Over the Place: On the Underthinking of o1-Like LLMs",
+      "arxiv_url": "https://arxiv.org/html/2501.18585v2",
+      "category": "inference_strategy",
+      "priority": "medium",
+      "description": "Inference time optimization through penalty strategies"
+    },
+    {
+      "id": 11,
+      "title": "ϕ-Decoding: Adaptive Foresight Sampling for Balanced Inference-Time Exploration and Exploitation",
+      "arxiv_url": "https://arxiv.org/html/2503.13288v1",
+      "category": "sampling",
+      "priority": "medium",
+      "description": "Adaptive sampling strategies"
+    },
+    {
+      "id": 12,
+      "title": "Scaling Test-Time Compute Without Verification or RL is Suboptimal",
+      "arxiv_url": "https://arxiv.org/html/2502.12118v2",
+      "category": "inference_strategy",
+      "priority": "low",
+      "description": "Test-time compute scaling analysis"
+    },
+    {
+      "id": 13,
+      "title": "From Explicit CoT to Implicit CoT: Learning to Internalize CoT Step by Step",
+      "arxiv_url": "https://arxiv.org/html/2405.14838v1",
+      "category": "inference_strategy",
+      "priority": "low",
+      "description": "Chain-of-thought internalization"
+    },
+    {
+      "id": 14,
+      "title": "T-MAC: CPU Renaissance via Table Lookup for Low-Bit LLM Deployment on Edge",
+      "arxiv_url": "https://www.arxiv.org/pdf/2407.00088",
+      "category": "edge_optimization",
+      "priority": "medium",
+      "description": "Table lookup based CPU optimization"
+    },
+    {
+      "id": 15,
+      "title": "SpecMQuant and FR-Spec: miniCPM4 Optimization Techniques",
+      "arxiv_url": "https://arxiv.org/html/2502.14856v2",
+      "category": "speculative_decoding",
+      "priority": "high",
+      "description": "Improved Eagle2-based speculative decoding"
+    },
+    {
+      "id": 16,
+      "title": "Real-time Editing Scenario KV Reuse",
+      "arxiv_url": "https://arxiv.org/html/2407.03157v2",
+      "category": "kv_cache",
+      "priority": "medium",
+      "description": "KV reuse for real-time editing applications"
+    }
+  ],
+  "repository_resources": [
+    {
+      "name": "Liger-Kernel",
+      "url": "https://github.com/linkedin/Liger-Kernel",
+      "category": "cuda_kernels",
+      "priority": "high",
+      "description": "LinkedIn's accelerated kernel implementations"
+    },
+    {
+      "name": "OmniServe (QServe evolution)",
+      "url": "https://github.com/mit-han-lab/omniserve",
+      "category": "serving_optimization",
+      "priority": "medium",
+      "description": "MIT Han Lab's serving optimization framework"
+    },
+    {
+      "name": "Dynasor",
+      "url": "https://github.com/hao-ai-lab/Dynasor",
+      "category": "token_optimization",
+      "priority": "low",
+      "description": "Dynamic token reduction"
+    },
+    {
+      "name": "FlashInfer Sampling",
+      "url": "https://flashinfer.ai/2025/03/10/sampling.html",
+      "category": "sampling",
+      "priority": "high",
+      "description": "Sorting-Free GPU Kernels for LLM Sampling"
+    }
+  ],
+  "llama_cpp_specific_fusion_targets": [
+    "heterogeneous_inference",
+    "sorting_free_sampling_kernels", 
+    "operator_layer_fusion",
+    "dequantization_computation_fusion",
+    "third_party_cuda_operators"
+  ]
+}

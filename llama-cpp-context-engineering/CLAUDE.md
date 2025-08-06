@@ -2,6 +2,18 @@
 
 此文件包含所有llama.cpp开发工作的全局规则和原则。这些规则专门针对C++高性能计算、CUDA编程、量化算法和模型推理优化。
 
+## 🎯 **重要工作目录设置**
+
+**Claude Code工作目录**: `/root/context-engineering-intro/llama-cpp-context-engineering/`
+**llama.cpp项目目录**: `/root/llama.cpp-clip`
+**PRPs保存位置**: 当前目录 (`PRPs/`)
+
+### 工作模式说明
+- 在当前目录 (`llama-cpp-context-engineering/`) 启动Claude Code
+- 所有PRPs分析和实现计划保存在当前目录的 `PRPs/` 中
+- 需要编译、测试或修改llama.cpp代码时，引用 `/root/llama.cpp-clip`
+- 无需部署脚本，无需文件同步，直接在此工作
+
 ## 🔄 llama.cpp核心开发原则
 
 **重要：这些原则适用于所有llama.cpp相关开发：**
@@ -11,12 +23,14 @@
 - **使用PRP模式**: INITIAL.md → `/generate-llama-prp INITIAL.md` → `/execute-llama-prp PRPs/filename.md`
 - **遵循验证循环** - 每个PRP必须包含性能测试和正确性验证
 - **上下文为王** - 包含所有必要的llama.cpp模式、示例和文档
+- **引用真实项目** - 需要时直接访问 `/root/llama.cpp-clip` 进行代码分析和测试
 
 ### llama.cpp项目研究方法
 - **广泛使用网络搜索** - 始终研究llama.cpp最新的最佳实践和优化技术
 - **学习官方文档** - GitHub仓库和Wiki是权威来源
 - **模式提取** - 识别可重用的架构和优化模式
 - **问题文档化** - 记录异步模式、内存管理和CUDA兼容性问题
+- **直接代码分析** - 使用Read工具分析 `/root/llama.cpp-clip` 中的实际代码
 
 ## 📚 项目认知与上下文
 
@@ -24,6 +38,7 @@
 - **遵循一致的llama.cpp命名约定**和代码结构模式
 - **遵循既定的目录组织**模式 (src/, examples/, tests/, scripts/)
 - **广泛利用llama.cpp示例** - 在创建新功能前研究现有模式
+- **引用实际项目结构** - 基于 `/root/llama.cpp-clip` 的真实架构进行分析
 
 ## 🧱 代码结构与模块化
 
@@ -134,6 +149,7 @@ void launch_quantize_kernel(
 - **性能基准测试** - 包含时间和内存使用测量
 - **正确性验证** - 数值精度和算法正确性测试
 - **多平台测试** - CPU, CUDA, OpenCL, Metal兼容性
+- **实际项目测试** - 在 `/root/llama.cpp-clip` 中进行实际编译和测试
 
 ## ✅ llama.cpp任务管理
 
@@ -141,6 +157,7 @@ void launch_quantize_kernel(
 - **实现完成后立即标记任务** 
 - **实时更新任务状态** 随着开发进展
 - **标记完成前测试功能** 确保性能和正确性
+- **在实际项目中验证** - 使用 `/root/llama.cpp-clip` 进行实际测试
 
 ## 📎 llama.cpp编码标准
 
@@ -196,6 +213,7 @@ public:
 - **学习官方示例** - GitHub仓库有工作实现
 - **研究模型能力** - 理解不同量化级别的性能特征
 - **记录集成模式** - 包含外部库集成示例
+- **直接分析源码** - 使用工具读取 `/root/llama.cpp-clip` 中的实际代码
 
 ## 🎯 llama.cpp实现标准
 
@@ -204,6 +222,7 @@ public:
 - **使用现有模式** 而不是从头创建
 - **包含综合错误处理** 处理内存和计算错误
 - **测试流式处理模式** 实现实时推理交互时
+- **在实际项目验证** - 编译测试需要在 `/root/llama.cpp-clip` 进行
 
 ## 🚫 要避免的反模式
 
@@ -221,6 +240,7 @@ public:
 - **遵循llama.cpp命令模式** 用于slash命令和工作流程
 - **使用验证循环** 确保每个开发步骤的质量
 - **测试多个编译器** 确保跨平台兼容性
+- **直接访问项目文件** - 使用Read工具分析 `/root/llama.cpp-clip` 中的代码
 
 ## 🧪 llama.cpp测试与可靠性
 
@@ -229,5 +249,6 @@ public:
 - **包含边界情况测试** 处理内存限制和异常输入
 - **验证数值稳定性** 确保量化和计算的精度
 - **在测试环境验证依赖注入** 正确工作
+- **使用实际项目测试** - 在 `/root/llama.cpp-clip` 中验证所有功能
 
 这些全局规则专门适用于llama.cpp开发，确保生产就绪的高性能推理应用，具有适当的错误处理、测试和安全实践。

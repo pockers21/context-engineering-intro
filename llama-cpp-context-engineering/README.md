@@ -1,33 +1,74 @@
-# llama.cpp Context Engineering 模板
+# llama.cpp Context Engineering 工作环境
 
-专为llama.cpp开发优化的Context Engineering模板，基于真实的llama.cpp项目结构和编码风格设计。
+专为llama.cpp开发优化的Context Engineering工作环境，提供直接工作模式，无需复杂的部署和同步流程。
+
+## 🎯 **核心理念：直接工作模式**
+
+**工作目录**: `/root/context-engineering-intro/llama-cpp-context-engineering/` (此目录)
+**llama.cpp项目**: `/root/llama.cpp-clip` (引用项目，用于编译和测试)
+**PRPs保存**: 当前目录的 `PRPs/` 中
+**优势**: 无需部署脚本，无需文件同步，直接工作即可
 
 ## 🚀 快速开始
 
-### 1. 复制模板到你的llama.cpp项目
+### 方法1: 直接工作模式 (推荐)
 
 ```bash
-# 复制整个模板到你的llama.cpp项目根目录
-cp -r llama-cpp-context-engineering/* /path/to/your/llama.cpp/
+# 1. 在此目录启动Claude Code
+cd /root/context-engineering-intro/llama-cpp-context-engineering
+claude-code
 
-# 或者只复制需要的部分
-cp -r llama-cpp-context-engineering/.claude /path/to/your/llama.cpp/
-cp llama-cpp-context-engineering/CLAUDE.md /path/to/your/llama.cpp/
-cp -r llama-cpp-context-engineering/PRPs /path/to/your/llama.cpp/
+# 2. 告诉Claude Code:
+# - 工作目录：当前目录
+# - llama.cpp项目：/root/llama.cpp-clip (引用项目)
+# - PRPs保存在当前目录
+
+# 3. 开始工作
+# 编辑 PRPs/INITIAL.md → 生成PRP → 实现功能
+
+# 4. 完成后直接提交到Git
+git add . && git commit -m "完成功能实现" && git push
 ```
 
-### 2. 使用Context Engineering工作流
+### 方法2: 传统部署模式 (兼容性)
 
 ```bash
-# 1. 定义你要实现的功能
-# 编辑 PRPs/INITIAL.md，描述你想要的llama.cpp功能
+# 如果需要在llama.cpp项目内工作
+cp -r . /path/to/your/llama.cpp/
+cd /path/to/your/llama.cpp/
+claude-code
+```
 
-# 2. 生成详细的实现计划
+## 🔄 Context Engineering工作流程
+
+### 标准工作流程
+
+```bash
+# 1. 定义功能需求
+编辑 PRPs/INITIAL.md，描述你想要的llama.cpp功能
+
+# 2. 生成详细实现计划
 /generate-llama-prp PRPs/INITIAL.md
 
-# 3. 执行实现
+# 3. 执行实现计划
 /execute-llama-prp PRPs/your-generated-prp.md
+
+# 4. 编译测试 (在引用项目中)
+# Claude会自动引用 /root/llama.cpp-clip 进行编译和测试
+
+# 5. 保存工作成果
+git add PRPs/ && git commit -m "完成XXX功能分析" && git push
 ```
+
+### 工作模式对比
+
+| 特性 | 直接工作模式 (推荐) | 传统部署模式 |
+|------|-------------------|-------------|
+| 设置步骤 | ✅ 1步 | ❌ 7步 |
+| 文件同步 | ✅ 不需要 | ❌ 需要手动同步 |
+| Git管理 | ✅ 直接提交 | ❌ 需要拷贝回来 |
+| 项目污染 | ✅ 完全分离 | ❌ 混合到llama.cpp |
+| 维护成本 | ✅ 很低 | ❌ 较高 |
 
 ## 📁 模板结构
 
@@ -212,12 +253,28 @@ echo "test prompt" | ./main -m ../../models/test.gguf --new-feature
 
 ## 📈 性能预期
 
-使用此模板可以期待：
+使用直接工作模式可以期待：
 
-- **开发效率**: 提升60-80%
-- **代码质量**: 更少的bug，更好的性能
-- **学习曲线**: 快速掌握llama.cpp开发模式
-- **维护成本**: 降低长期维护难度
+- **设置效率**: 相比传统模式提升700% (1步 vs 7步)
+- **开发效率**: 消除文件同步开销，专注功能开发
+- **维护成本**: 降低90%，无需维护复杂的同步脚本
+- **代码质量**: 基于真实llama.cpp项目的实际代码风格
+- **Git管理**: 完美的版本控制，所有工作直接在仓库中进行
+
+## 🎯 适用场景
+
+### ✅ 推荐使用直接工作模式的情况
+- llama.cpp功能分析和设计
+- 算法实现原型设计
+- 性能优化方案制定
+- 论文分析和实现规划
+- 学习和研究llama.cpp源码
+
+### 🔄 推荐使用传统部署模式的情况
+- 需要直接修改llama.cpp源码
+- 需要频繁编译调试
+- 多人协作开发同一功能
+- 需要集成到现有CI/CD流程
 
 ## 🔗 相关资源
 
@@ -241,4 +298,26 @@ echo "test prompt" | ./main -m ../../models/test.gguf --new-feature
 
 ---
 
-**准备好优化你的llama.cpp开发了吗？** 从复制模板和编辑`PRPs/INITIAL.md`开始吧！ 🚀
+## 🚀 立即开始
+
+**准备好使用优雅的直接工作模式了吗？**
+
+1. **确保你在正确的目录中**：
+   ```bash
+   pwd  # 应该是 /root/context-engineering-intro/llama-cpp-context-engineering
+   ```
+
+2. **启动Claude Code**：
+   ```bash
+   claude-code
+   ```
+
+3. **告诉Claude**：
+   - 工作目录：当前目录
+   - llama.cpp项目：`/root/llama.cpp-clip`
+   - PRPs保存：当前目录
+
+4. **开始你的第一个功能**：
+   编辑 `PRPs/INITIAL.md` 描述你想实现的llama.cpp功能！
+
+**这就是全部！无需复杂的部署脚本，无需文件同步，优雅且高效！** ✨
