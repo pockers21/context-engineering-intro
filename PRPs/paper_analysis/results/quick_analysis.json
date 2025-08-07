@@ -1,0 +1,134 @@
+{
+  "analysis_timestamp": "2025-08-06T10:39:58.454943",
+  "method": "基于真实论文内容的快速分析",
+  "papers_analyzed": 10,
+  "priority_ranking": [
+    {
+      "title": "FlatQuant: Flatness Matters for LLM Quantization",
+      "url": "https://arxiv.org/html/2410.09426v1",
+      "category": "量化技术",
+      "abstract_snippet": "Recently, quantization has been widely used for the compression and acceleration of large language models (LLMs). Due to the outliers in LLMs, it is crucial to flatten weights and activations to minim...",
+      "performance_claims": [
+        "2.3x加速",
+        "1.7x加速"
+      ],
+      "llama_cpp_relevance": 0.8,
+      "estimated_complexity": "高",
+      "analysis_status": "成功",
+      "priority_score": 7.0
+    },
+    {
+      "title": "KV Cache is 1 Bit Per Channel: Efficient Large Language Model Inference with Coupled Quantization",
+      "url": "https://arxiv.org/abs/2405.03917",
+      "category": "量化技术",
+      "abstract_snippet": "",
+      "performance_claims": [],
+      "llama_cpp_relevance": 1.0,
+      "estimated_complexity": "低",
+      "analysis_status": "部分成功",
+      "priority_score": 7.0
+    },
+    {
+      "title": "INT-FlashAttention: Enabling Flash Attention for INT8 Quantization",
+      "url": "https://arxiv.org/html/2409.16997v1",
+      "category": "注意力优化",
+      "abstract_snippet": "As the foundation of large language models (LLMs), self-attention module faces the challenge of quadratic time and memory complexity with respect to sequence length. FlashAttention accelerates attenti...",
+      "performance_claims": [
+        "72%改进"
+      ],
+      "llama_cpp_relevance": 1.0,
+      "estimated_complexity": "高",
+      "analysis_status": "成功",
+      "priority_score": 6.5
+    },
+    {
+      "title": "SageAttention: Accurate 8-bit attention for Plug-and-Play Inference Acceleration",
+      "url": "https://arxiv.org/html/2410.02367v1",
+      "category": "注意力优化",
+      "abstract_snippet": "The transformer architecture predominates across various models. As the heart of the transformer, attention has a computational complexity of O⁢(N2)𝑂superscript𝑁2O(N^{2})italic_O ( italic_N start_POST...",
+      "performance_claims": [],
+      "llama_cpp_relevance": 1.0,
+      "estimated_complexity": "高",
+      "analysis_status": "成功",
+      "priority_score": 5.0
+    },
+    {
+      "title": "KV-Compress: Paged KV-Cache Compression with Variable Compression Rates per Attention Head",
+      "url": "https://arxiv.org/html/2410.00161v2",
+      "category": "注意力优化",
+      "abstract_snippet": "Context lengths of Large Language Models (LLMs) have exploded in recent years, with 128k-token context becoming a standard and million-token context becoming a reality. Efficiently supporting long-con...",
+      "performance_claims": [],
+      "llama_cpp_relevance": 1.0,
+      "estimated_complexity": "高",
+      "analysis_status": "成功",
+      "priority_score": 5.0
+    },
+    {
+      "title": "Training-Free Activation Sparsity in Large Language Models",
+      "url": "https://arxiv.org/html/2408.14690v1",
+      "category": "量化技术",
+      "abstract_snippet": "Activation sparsity can enable practical inference speedups in large language models (LLMs) by reducing the compute and memory-movement required for matrix multiplications during the forward pass. How...",
+      "performance_claims": [],
+      "llama_cpp_relevance": 1.0,
+      "estimated_complexity": "高",
+      "analysis_status": "成功",
+      "priority_score": 5.0
+    },
+    {
+      "title": "QSpec: Speculative Decoding with Complementary Quantization Schemes",
+      "url": "https://arxiv.org/html/2410.11305v1",
+      "category": "量化技术",
+      "abstract_snippet": "Quantization has been substantially adopted to accelerate inference and reduce memory consumption of large language models (LLMs). While activation-weight joint quantization speeds up the inference pr...",
+      "performance_claims": [],
+      "llama_cpp_relevance": 1.0,
+      "estimated_complexity": "高",
+      "analysis_status": "成功",
+      "priority_score": 5.0
+    },
+    {
+      "title": "Sorting-Free GPU Kernels for LLM Sampling | FlashInfer",
+      "url": "https://flashinfer.ai/2025/03/10/sampling.html",
+      "category": "注意力优化",
+      "abstract_snippet": "",
+      "performance_claims": [],
+      "llama_cpp_relevance": 0.8,
+      "estimated_complexity": "中等",
+      "analysis_status": "部分成功",
+      "priority_score": 5.0
+    },
+    {
+      "title": "EAGLE-3: Scaling up Inference Acceleration of Large Language Models via Training-Time Test",
+      "url": "https://arxiv.org/html/2503.01840",
+      "category": "推测采样",
+      "abstract_snippet": "The sequential nature of modern LLMs makes them expensive and slow, and speculative sampling has proven to be an effective solution to this problem. Methods like EAGLE perform autoregression at the fe...",
+      "performance_claims": [
+        "1.4x加速"
+      ],
+      "llama_cpp_relevance": 0.6,
+      "estimated_complexity": "高",
+      "analysis_status": "成功",
+      "priority_score": 3.5
+    },
+    {
+      "title": "MARLIN: Mixed-Precision Auto-Regressive Parallel Inference on Large Language Models",
+      "url": "https://arxiv.org/abs/2408.11743",
+      "category": "其他",
+      "abstract_snippet": "",
+      "performance_claims": [],
+      "llama_cpp_relevance": 0.6,
+      "estimated_complexity": "中等",
+      "analysis_status": "部分成功",
+      "priority_score": 3.0
+    }
+  ],
+  "summary": {
+    "total_papers": 10,
+    "successful_analysis": 7,
+    "top_categories": {
+      "量化技术": 4,
+      "注意力优化": 4,
+      "推测采样": 1,
+      "其他": 1
+    }
+  }
+}
